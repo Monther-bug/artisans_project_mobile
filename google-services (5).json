@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "227649431304",
+    "project_id": "artisan-project-2a65a",
+    "storage_bucket": "artisan-project-2a65a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227649431304:android:0f47dd82ea477bf3fd2ebd",
+        "android_client_info": {
+          "package_name": "com.example.artisans_project_mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "227649431304-knsu4c2udm5g2dqr8is0e99t4osna4mc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6TXjL6IDHRNZL73oANsnCESPekbsH5ZQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "227649431304-knsu4c2udm5g2dqr8is0e99t4osna4mc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
