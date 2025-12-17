@@ -1,56 +1,186 @@
-# Artisans Mobile Demo
+# Artisans Mobile
 
-A Flutter application built with Clean Architecture, demonstrating robust structure, simple authentication, exercise listing with searching/filtering, and local favorites persistence.
+A Flutter fitness application built with Clean Architecture, featuring exercise discovery, favorites management, and robust authentication.
 
-## Features
+## ✨ Features
 
-- **Authentication**: Firebase Auth (Login, Register, Google Sign-In*).
-- **Exercises**: List exercises from ExerciseDB API, Search by name, Filter by body part.
-- **Details**: View exercise GIF and instructions.
-- **Favorites**: Save exercises locally (SharedPreferences).
-- **Theming**: Light/Dark mode toggle with persistence.
-- **Architecture**: Clean Architecture (Domain, Data, Presentation) + Riverpod + GoRouter + Frozen/JsonSerializable.
+### 🔐 Authentication
+- Firebase Email/Password authentication
+- Google Sign-In integration
+- Secure user session management
+- OTP verification flow
 
-## Setup
+### 💪 Exercise Discovery
+- Browse extensive exercise library from ExerciseDB API
+- View detailed exercise information with animated GIFs
+- Step-by-step instructions and safety tips
+- Pagination support for efficient loading
 
-1.  **Dependencies**:
-    ```bash
-    flutter pub get
-    ```
+### 🔍 Search & Filter
+- Real-time exercise search by name
+- Filter by body part (Back, Cardio, Chest, Arms, Legs, etc.)
+- Dedicated search page with independent state management
+- Shimmer loading effects
 
-2.  **Firebase**:
-    - Project requires Firebase setup.
-    - Run `flutterfire configure` to generate `firebase_options.dart`.
-    - Ensure Authentication (Email/Password & Google) is enabled in Firebase Console.
+### ⭐ Favorites
+- Save favorite exercises locally using SharedPreferences
+- Quick access to saved exercises
+- Persistent across app sessions
 
-3.  **API Key**:
-    - The project uses [ExerciseDB](https://rapidapi.com/justin-wf/api/exercisedb) via RapidAPI.
-    - Open `lib/core/constants/api_constants.dart` and add your RapidAPI Key if needed (or ensure headers are correct).
+### 🎨 User Experience
+- Light/Dark mode with theme persistence
+- Responsive bottom navigation with Riverpod state management
+- Smooth animations and transitions
+- Localization support (English & Arabic)
 
-4.  **Run**:
-    ```bash
-    flutter run
-    ```
+---
 
-## Architecture
+## 🚀 Setup
 
-- **Core**: Shared utilities, DI, Router, Network Client.
-- **Features**:
-  - `auth`: Authentication logic & UI.
-  - `exercises`: Remote data fetching & Listing UI.
-  - `favorites`: Local persistence & UI.
-- **Shared**: Common widgets & Theme.
+### Prerequisites
+- Flutter SDK ^3.9.2
+- Firebase project (for authentication)
 
-## Dependencies
+### Installation
 
-- `flutter_riverpod`: State Management.
-- `go_router`: Navigation.
-- `dio`: Networking.
-- `get_it` / `injectable`: Dependency Injection.
-- `firebase_auth` / `google_sign_in`: Authentication.
-- `shared_preferences`: Local Storage.
-- `freezed`: Data Class generation.
+1. **Install Dependencies**
+   ```bash
+   flutter pub get
+   ```
 
-## Workarounds
+2. **Configure Firebase**
+   ```bash
+   flutterfire configure
+   ```
+   - Enable Email/Password authentication in Firebase Console
+   - Enable Google Sign-In in Firebase Console
 
-- Downgraded `google_sign_in` to `^6.2.1` due to breaking changes in 7.x compatible with current implementations.
+3. **API Configuration**
+   - The project uses [ExerciseDB](https://www.exercisedb.dev) API
+   - Base URL: `https://www.exercisedb.dev/api/v1`
+   - No API key required (free public API)
+   - Endpoints are configured in `lib/core/constants/api_constants.dart`
+
+4. **Run the App**
+   ```bash
+   flutter run
+   ```
+
+---
+
+## 🏗️ Architecture
+
+### Clean Architecture Layers
+- **Domain**: Business logic and entities
+- **Data**: Repository implementations and data sources
+- **Presentation**: UI components and state management
+
+### Project Structure
+```
+lib/
+├── core/              # Shared utilities, DI, Router, Network
+├── features/
+│   ├── auth/          # Authentication logic & UI
+│   ├── exercises/     # Exercise listing & details
+│   ├── favorites/     # Local favorites persistence
+│   ├── search/        # Search functionality
+│   ├── profile/       # User profile
+│   └── layout/        # Main app layout
+└── shared/            # Common widgets & theme
+```
+
+---
+
+## 📦 Key Dependencies
+
+- **State Management**: `flutter_riverpod: ^3.0.3`
+- **Navigation**: `go_router: ^17.0.1`
+- **Networking**: `dio: ^5.9.0`
+- **Authentication**: `firebase_auth: ^6.1.3`, `google_sign_in: ^6.2.1`
+- **Local Storage**: `shared_preferences: ^2.5.4`
+- **UI**: `google_fonts: ^6.3.3`, `flutter_screenutil: ^5.9.3`, `shimmer: ^3.0.0`
+- **Code Generation**: `freezed: ^3.2.3`, `json_serializable: ^6.11.2`
+- **Utilities**: `equatable: ^2.0.7`, `dartz: ^0.10.1`
+
+---
+
+## 📱 Platform Support
+
+- ✅ **Android**: Fully supported
+- ✅ **iOS**: Fully supported
+- ⚠️ **Web**: Limited support
+
+---
+
+## 🔧 Build Commands
+
+### Development
+```bash
+flutter run
+```
+
+### Release Builds
+
+**Android APK (Universal)**
+```bash
+flutter build apk --release
+```
+
+**Android APK (Split by ABI - Recommended)**
+```bash
+flutter build apk --release --split-per-abi
+```
+
+**Android App Bundle (For Play Store)**
+```bash
+flutter build appbundle
+```
+
+**iOS**
+```bash
+flutter build ios --release
+```
+
+---
+
+## 📝 Recent Updates (v1.0.0)
+
+### Bug Fixes
+- ✅ Fixed "Undefined name 'ref'" error in bottom navigation
+- ✅ Fixed search results affecting main exercise list (separate providers)
+- ✅ Improved localization configuration
+
+### Improvements
+- ✅ Converted main layout to use Riverpod ConsumerWidget
+- ✅ Independent state management for search and exercise list
+- ✅ Enhanced UI with shimmer loading effects
+- ✅ Added pagination for efficient data loading
+
+---
+
+## 🌍 Localization
+
+The app supports multiple languages:
+- **English** (en)
+- **Arabic** (ar) with RTL layout support
+
+To add more languages, update `lib/l10n/` files.
+
+---
+
+## 📄 License
+
+This project is for demonstration purposes.
+
+---
+
+## 🙏 Credits
+
+- **ExerciseDB API** for exercise data and images
+- **Firebase** for authentication services
+- **Flutter Community** for amazing packages
+
+---
+
+**Version**: 1.0.0+1  
+**Last Updated**: December 2025
