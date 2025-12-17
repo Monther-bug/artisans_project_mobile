@@ -23,6 +23,10 @@ class FavoritesRepositoryImpl implements FavoritesRepository {
         target: exercise.target,
         gifUrl: exercise.gifUrl,
         instructions: exercise.instructions,
+        difficulty: exercise.difficulty,
+        type: exercise.type,
+        safetyInfo: exercise.safetyInfo,
+        secondaryMuscles: exercise.secondaryMuscles,
       );
       await _localDataSource.addFavorite(model);
       return const Right(null);

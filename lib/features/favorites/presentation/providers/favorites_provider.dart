@@ -49,7 +49,7 @@ class FavoritesNotifier extends Notifier<FavoritesState> {
 
   @override
   FavoritesState build() {
-    loadFavorites();
+    Future.microtask(() => loadFavorites());
     return const FavoritesState(isLoading: true);
   }
 

@@ -11,6 +11,7 @@ class ExerciseEntity extends Equatable {
   final String difficulty;
   final String type;
   final String safetyInfo;
+  final List<String> secondaryMuscles;
 
   const ExerciseEntity({
     required this.id,
@@ -23,6 +24,7 @@ class ExerciseEntity extends Equatable {
     this.difficulty = '',
     this.type = '',
     this.safetyInfo = '',
+    this.secondaryMuscles = const [],
   });
 
   @override
@@ -37,5 +39,6 @@ class ExerciseEntity extends Equatable {
     difficulty,
     type,
     safetyInfo,
+    secondaryMuscles,
   ];
 }

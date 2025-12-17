@@ -50,13 +50,25 @@ class _SplashPageState extends ConsumerState<SplashPage>
   @override
   Widget build(BuildContext context) {
     ref.listen(splashControllerProvider, (previous, next) {
-      next.whenData((state) {
-        if (state == SplashState.authenticated) {
-          context.go('/');
-        } else if (state == SplashState.unauthenticated) {
-          context.go('/login');
-        }
-      });
+      next.when(
+        data: (state) {
+          if (state == SplashState.authenticated) {
+            context.go('/');
+          } else if (state == SplashState.unauthenticated) {
+            context.go('/login');
+          }
+        },
+        error: (error, stackTrace) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Startup Error: $error'),
+              backgroundColor: Colors.red,
+              duration: const Duration(seconds: 10),
+            ),
+          );
+        },
+        loading: () {},
+      );
     });
 
     return Scaffold(

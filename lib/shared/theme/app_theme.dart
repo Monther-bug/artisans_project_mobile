@@ -11,7 +11,17 @@ class AppTheme {
   static final lightTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
-    colorSchemeSeed: primaryColor,
+
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: primaryColor,
+      brightness: Brightness.light,
+      primary: Colors.black,
+      onPrimary: Colors.white,
+      secondary: Colors.black,
+      onSecondary: Colors.white,
+      surface: Colors.white,
+      onSurface: Colors.black,
+    ),
     scaffoldBackgroundColor: const Color(0xFFFFFFFF),
     textTheme: GoogleFonts.outfitTextTheme(ThemeData.light().textTheme),
 
@@ -97,12 +107,23 @@ class AppTheme {
   static final darkTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
-    colorSchemeSeed: primaryColor,
-    scaffoldBackgroundColor: const Color(0xFF000000),
+
+    // colorSchemeSeed: primaryColor,
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: primaryColor,
+      brightness: Brightness.dark,
+      primary: Colors.white,
+      onPrimary: Colors.black,
+      secondary: Colors.white,
+      onSecondary: Colors.black,
+      surface: const Color(0xFF121212),
+      onSurface: Colors.white,
+    ),
+    scaffoldBackgroundColor: const Color(0xFF121212),
     textTheme: GoogleFonts.outfitTextTheme(ThemeData.dark().textTheme),
 
     appBarTheme: const AppBarTheme(
-      backgroundColor: Color(0xFF000000),
+      backgroundColor: Color(0xFF121212),
       elevation: 0,
       centerTitle: true,
       scrolledUnderElevation: 0,
@@ -150,8 +171,9 @@ class AppTheme {
         horizontal: AppDimensions.paddingMedium,
         vertical: AppDimensions.paddingMedium,
       ),
-      prefixIconColor: Colors.white,
-      suffixIconColor: Colors.white,
+      prefixIconColor: Colors.white70,
+      suffixIconColor: Colors.white70,
+      hintStyle: TextStyle(color: Colors.white38),
     ),
 
     cardTheme: CardThemeData(

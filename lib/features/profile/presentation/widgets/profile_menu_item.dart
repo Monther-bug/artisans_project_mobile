@@ -24,13 +24,6 @@ class ProfileMenuItem extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
         border: Border.all(color: Colors.grey.shade100),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
       ),
       child: Material(
         color: Colors.transparent,

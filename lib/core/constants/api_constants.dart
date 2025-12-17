@@ -1,8 +1,7 @@
 class ApiConstants {
-  static const String baseUrl = 'https://api.api-ninjas.com/v1';
+  static const String baseUrl = 'https://www.exercisedb.dev/api/v1';
   static const String exercisesEndpoint = '/exercises';
-
-  // API Key for API Ninjas
-  static const String apiKeyHeader = 'X-Api-Key';
-  static const String apiKeyValue = '0e0NflL7zfpDDERVK1oavg==4bupR02hNfx3rvK6';
+  static const String searchEndpoint = '/exercises/search';
+  static const String filterEndpoint = '/exercises/filter';
+  static const String bodyPartsEndpoint = '/bodyparts';
 }

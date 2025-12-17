@@ -5,15 +5,11 @@ import '../../../../core/errors/failures.dart';
 import '../../domain/entities/exercise_entity.dart';
 import '../../domain/repositories/exercise_repository.dart';
 import '../datasources/exercise_remote_data_source.dart';
-import '../datasources/exercise_local_data_source.dart';
 
 class ExerciseRepositoryImpl implements ExerciseRepository {
-  final ExerciseLocalDataSource _localDataSource;
+  final ExerciseRemoteDataSource _remoteDataSource;
 
-  ExerciseRepositoryImpl(
-    ExerciseRemoteDataSource remoteDataSource,
-    this._localDataSource,
-  );
+  ExerciseRepositoryImpl(this._remoteDataSource);
 
   @override
   Future<Either<Failure, List<ExerciseEntity>>> getExercises({
@@ -23,15 +19,13 @@ class ExerciseRepositoryImpl implements ExerciseRepository {
     String? bodyPart,
   }) async {
     try {
-      if (true) {
-        final models = await _localDataSource.getExercises(
-          limit: limit,
-          offset: offset,
-          searchQuery: searchQuery,
-          bodyPart: bodyPart,
-        );
-        return Right(models);
-      }
+      final models = await _remoteDataSource.getExercises(
+        limit: limit,
+        offset: offset,
+        searchQuery: searchQuery,
+        bodyPart: bodyPart,
+      );
+      return Right(models);
     } on NotFoundException catch (e) {
       return Left(NotFoundFailure(e.message));
     } on UnauthorizedException catch (e) {

@@ -17,7 +17,7 @@ class ExerciseInstructions extends StatelessWidget {
           Text(
             'Instructions',
             style: TextStyle(
-              fontSize: 24.sp,
+              fontSize: 20.sp,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
@@ -34,8 +34,8 @@ class ExerciseInstructions extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: 28.w,
-                    height: 28.w,
+                    width: 20.w,
+                    height: 20.w,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: Colors.black,
@@ -55,7 +55,7 @@ class ExerciseInstructions extends StatelessWidget {
                     child: Text(
                       instructions[index],
                       style: TextStyle(
-                        fontSize: 16.sp,
+                        fontSize: 14.sp,
                         color: Colors.grey.shade800,
                         height: 1.6,
                       ),

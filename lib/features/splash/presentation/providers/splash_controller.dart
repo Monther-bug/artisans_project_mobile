@@ -1,5 +1,5 @@
-import 'package:artisans_project_mobile/features/auth/presentation/providers/auth_provider.dart';
 import 'package:artisans_project_mobile/firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,8 +15,9 @@ class SplashController extends AsyncNotifier<SplashState> {
 
     await Future.wait([minSplashDuration, firebaseInit]);
 
-    final authState = ref.read(authNotifierProvider);
-    if (authState.user != null) {
+    final user = await FirebaseAuth.instance.authStateChanges().first;
+
+    if (user != null) {
       return SplashState.authenticated;
     } else {
       return SplashState.unauthenticated;

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:artisans_project_mobile/shared/theme/theme_provider.dart';
+import 'package:artisans_project_mobile/shared/providers/locale_provider.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
@@ -67,6 +68,13 @@ class ProfilePage extends ConsumerWidget {
               icon: Icons.help_outline,
               title: localization.helpSupport,
               onTap: () {},
+            ),
+            ProfileMenuItem(
+              icon: Icons.language,
+              title: 'Language (English / العربية)',
+              onTap: () {
+                ref.read(localeProvider.notifier).toggleLocale();
+              },
             ),
             SizedBox(height: AppDimensions.spaceLarge),
             ProfileMenuItem(

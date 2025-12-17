@@ -12,46 +12,53 @@ class ExerciseModel extends ExerciseEntity {
     super.difficulty,
     super.type,
     super.safetyInfo,
+    super.secondaryMuscles,
   });
 
   factory ExerciseModel.fromJson(Map<String, dynamic> json) {
-    // Parse equipments: User JSON has "equipments": ["dumbbells", "incline bench"]
-    // API Ninjas sometimes sends "equipment": "string"
-    String equipmentStr = '';
-    if (json['equipments'] != null && json['equipments'] is List) {
-      equipmentStr = (json['equipments'] as List).join(', ');
-    } else if (json['equipment'] != null) {
-      equipmentStr = json['equipment'].toString();
+    String extractFirst(dynamic list) {
+      if (list is List && list.isNotEmpty) {
+        return list[0].toString();
+      }
+      return '';
+    }
+
+    List<String> extractInstructions(dynamic instructions) {
+      if (instructions is List) {
+        return instructions.map((e) => e.toString()).toList();
+      }
+      return [];
     }
 
     return ExerciseModel(
-      // ID strategy: name as ID since it's unique enough for this list
-      id: json['name'] ?? 'unknown',
+      id: json['exerciseId'] ?? json['name'] ?? 'unknown',
       name: json['name'] ?? '',
-      // 'muscle' maps to bodyPart
-      bodyPart: json['muscle'] ?? '',
-      equipment: equipmentStr,
-      // 'muscle' also maps to target if no specific target field
-      target: json['muscle'] ?? '',
-      // No dummy GIFs in user data
-      gifUrl: '',
-      // Instructions
-      instructions: json['instructions'] != null
-          ? [json['instructions'] as String]
-          : [],
-      // New fields
+      bodyPart: extractFirst(json['bodyParts']),
+      equipment: extractFirst(json['equipments']),
+      target: extractFirst(json['targetMuscles']),
+      gifUrl: json['gifUrl'] ?? '',
+      instructions: extractInstructions(json['instructions']),
+
       difficulty: json['difficulty'] ?? '',
       type: json['type'] ?? '',
+      secondaryMuscles:
+          (json['secondaryMuscles'] as List?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
       safetyInfo: json['safety_info'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'exerciseId': id,
       'name': name,
-      'muscle': bodyPart,
-      'equipments': equipment.split(', '),
-      'instructions': instructions.join(' '),
+      'bodyParts': [bodyPart],
+      'equipments': [equipment],
+      'targetMuscles': [target],
+      'gifUrl': gifUrl,
+      'instructions': instructions,
       'difficulty': difficulty,
       'type': type,
       'safety_info': safetyInfo,

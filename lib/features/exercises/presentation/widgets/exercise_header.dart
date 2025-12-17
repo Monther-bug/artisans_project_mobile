@@ -25,7 +25,7 @@ class ExerciseHeader extends StatelessWidget {
               color: Colors.grey.shade100,
               child: Icon(
                 Icons.fitness_center,
-                size: 64.sp,
+                size: 60.sp,
                 color: Colors.grey,
               ),
             );

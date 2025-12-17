@@ -83,14 +83,14 @@ class AuthNotifier extends Notifier<AuthState> {
   @override
   AuthState build() {
     Future.microtask(() => _checkCurrentUser());
-    return const AuthState.initial();
+    return const AuthState(isLoading: true);
   }
 
   Future<void> _checkCurrentUser() async {
     final result = await _repository.getCurrentUser();
     result.fold(
-      (failure) => state = state.copyWith(user: null),
-      (user) => state = state.copyWith(user: user),
+      (failure) => state = state.copyWith(user: null, isLoading: false),
+      (user) => state = state.copyWith(user: user, isLoading: false),
     );
   }
 

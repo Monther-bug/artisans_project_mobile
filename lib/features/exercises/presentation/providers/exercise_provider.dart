@@ -7,10 +7,6 @@ import '../../data/datasources/exercise_remote_data_source.dart';
 import '../../data/datasources/exercise_local_data_source.dart';
 import '../../data/repositories/exercise_repository_impl.dart';
 
-// Actually ExerciseListPage imports this file, so we shouldn't import it back if not needed.
-
-// --- DI Providers ---
-
 final exerciseRemoteDataSourceProvider = Provider<ExerciseRemoteDataSource>((
   ref,
 ) {
@@ -24,10 +20,7 @@ final exerciseLocalDataSourceProvider = Provider<ExerciseLocalDataSource>((
 });
 
 final exerciseRepositoryProvider = Provider<ExerciseRepository>((ref) {
-  return ExerciseRepositoryImpl(
-    ref.watch(exerciseRemoteDataSourceProvider),
-    ref.watch(exerciseLocalDataSourceProvider),
-  );
+  return ExerciseRepositoryImpl(ref.watch(exerciseRemoteDataSourceProvider));
 });
 
 class ExerciseListState extends Equatable {
@@ -95,17 +88,12 @@ class ExerciseListNotifier extends Notifier<ExerciseListState> {
 
   Future<void> updateFilters({String? search, String? bodyPart}) async {
     _offset = 0;
-    // If we pass null, we might mean "clear" or "keep". Let's assume passed values replace current.
-    // If search is passed, use it. If bodyPart is passed, use it.
-    // Simpler: require both or handle state copy.
-    // Let's implement robust update.
 
-    // We update state with new filters and clear list
     state = ExerciseListState(
       isLoading: true,
       searchQuery: search ?? state.searchQuery,
       selectedBodyPart: bodyPart ?? state.selectedBodyPart,
-      exercises: [], // Clear list
+      exercises: [],
     );
 
     await fetchExercises();
@@ -115,12 +103,9 @@ class ExerciseListNotifier extends Notifier<ExerciseListState> {
     if (state.hasReachedMax && !state.isLoading) return;
 
     if (state.isLoading && state.exercises.isNotEmpty && _offset > 0) {
-      // already loading more
       return;
     }
 
-    // Only set loading if it's load more (if list not empty)
-    // If list is empty (initial or reset), we already set loading in updateFilters or build.
     if (state.exercises.isNotEmpty) {
       state = state.copyWith(isLoading: true, errorMessage: null);
     }
