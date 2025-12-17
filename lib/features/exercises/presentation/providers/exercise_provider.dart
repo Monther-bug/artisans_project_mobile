@@ -74,6 +74,11 @@ final exerciseListProvider =
       return ExerciseListNotifier();
     });
 
+final searchExerciseListProvider =
+    NotifierProvider<SearchExerciseListNotifier, ExerciseListState>(() {
+      return SearchExerciseListNotifier();
+    });
+
 class ExerciseListNotifier extends Notifier<ExerciseListState> {
   int _offset = 0;
   static const _limit = 10;
@@ -84,6 +89,70 @@ class ExerciseListNotifier extends Notifier<ExerciseListState> {
   ExerciseListState build() {
     Future.microtask(() => fetchExercises());
     return const ExerciseListState(isLoading: true);
+  }
+
+  Future<void> updateFilters({String? search, String? bodyPart}) async {
+    _offset = 0;
+
+    state = ExerciseListState(
+      isLoading: true,
+      searchQuery: search ?? state.searchQuery,
+      selectedBodyPart: bodyPart ?? state.selectedBodyPart,
+      exercises: [],
+    );
+
+    await fetchExercises();
+  }
+
+  Future<void> fetchExercises() async {
+    if (state.hasReachedMax && !state.isLoading) return;
+
+    if (state.isLoading && state.exercises.isNotEmpty && _offset > 0) {
+      return;
+    }
+
+    if (state.exercises.isNotEmpty) {
+      state = state.copyWith(isLoading: true, errorMessage: null);
+    }
+
+    final result = await _repository.getExercises(
+      limit: _limit,
+      offset: _offset,
+      searchQuery: state.searchQuery,
+      bodyPart: state.selectedBodyPart == 'All' ? null : state.selectedBodyPart,
+    );
+
+    result.fold(
+      (failure) => state = state.copyWith(
+        isLoading: false,
+        errorMessage: failure.message,
+      ),
+      (newExercises) {
+        if (newExercises.isEmpty) {
+          state = state.copyWith(isLoading: false, hasReachedMax: true);
+        } else {
+          _offset += _limit;
+          state = state.copyWith(
+            isLoading: false,
+            exercises: [...state.exercises, ...newExercises],
+            hasReachedMax: newExercises.length < _limit,
+          );
+        }
+      },
+    );
+  }
+}
+
+class SearchExerciseListNotifier extends Notifier<ExerciseListState> {
+  int _offset = 0;
+  static const _limit = 10;
+
+  ExerciseRepository get _repository => ref.read(exerciseRepositoryProvider);
+
+  @override
+  ExerciseListState build() {
+    // Don't auto-fetch on build for search page
+    return const ExerciseListState();
   }
 
   Future<void> updateFilters({String? search, String? bodyPart}) async {

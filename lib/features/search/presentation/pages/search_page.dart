@@ -25,7 +25,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(exerciseListProvider);
+    final state = ref.watch(searchExerciseListProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Search')),
@@ -39,7 +39,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
               onChanged: (value) {},
               onSubmitted: (value) {
                 ref
-                    .read(exerciseListProvider.notifier)
+                    .read(searchExerciseListProvider.notifier)
                     .updateFilters(search: value);
               },
             ),

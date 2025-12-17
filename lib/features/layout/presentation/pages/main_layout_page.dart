@@ -1,21 +1,16 @@
+import 'package:artisans_project_mobile/features/layout/presentation/providers/bottom_nav_provider.dart';
 import 'package:artisans_project_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:artisans_project_mobile/features/exercises/presentation/pages/exercise_list_page.dart';
 import 'package:artisans_project_mobile/features/favorites/presentation/pages/favorites_page.dart';
 import 'package:artisans_project_mobile/features/search/presentation/pages/search_page.dart';
 import 'package:artisans_project_mobile/features/profile/presentation/pages/profile_page.dart';
 
-class MainLayoutPage extends StatefulWidget {
+class MainLayoutPage extends ConsumerWidget {
   const MainLayoutPage({super.key});
 
-  @override
-  State<MainLayoutPage> createState() => _MainLayoutPageState();
-}
-
-class _MainLayoutPageState extends State<MainLayoutPage> {
-  int _currentIndex = 0;
-
-  final List<Widget> _pages = const [
+  static const List<Widget> _pages = [
     ExerciseListPage(),
     FavoritesPage(),
     SearchPage(),
@@ -23,9 +18,11 @@ class _MainLayoutPageState extends State<MainLayoutPage> {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentIndex = ref.watch(bottomNavIndexProvider);
+
     return Scaffold(
-      body: IndexedStack(index: _currentIndex, children: _pages),
+      body: IndexedStack(index: currentIndex, children: _pages),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           splashColor: Colors.transparent,
@@ -34,13 +31,13 @@ class _MainLayoutPageState extends State<MainLayoutPage> {
         child: BottomNavigationBar(
           backgroundColor: Theme.of(context).cardColor,
           elevation: 0,
-          currentIndex: _currentIndex,
+          currentIndex: currentIndex,
           selectedItemColor: Theme.of(context).colorScheme.primary,
           unselectedItemColor: Theme.of(context).unselectedWidgetColor,
           showUnselectedLabels: true,
           type: BottomNavigationBarType.fixed,
           onTap: (index) {
-            setState(() => _currentIndex = index);
+            ref.read(bottomNavIndexProvider.notifier).state = index;
           },
           items: [
             BottomNavigationBarItem(

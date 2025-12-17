@@ -1,4 +1,3 @@
-// import '../../../../core/constants/dummy_exercises.dart';
 import '../models/exercise_model.dart';
 
 abstract class ExerciseLocalDataSource {
