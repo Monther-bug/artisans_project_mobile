@@ -1,8 +1,18 @@
 import 'package:artisans_project_mobile/features/exercises/domain/entities/exercise_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/di/injection.dart';
-import '../../../../core/usecase/usecase.dart';
-import '../../domain/usecases/favorites_usecases.dart';
+import '../../domain/repositories/favorites_repository.dart';
+import '../../data/datasources/favorites_local_data_source.dart';
+import '../../data/repositories/favorites_repository_impl.dart';
+
+final favoritesLocalDataSourceProvider = Provider<FavoritesLocalDataSource>((
+  ref,
+) {
+  return FavoritesLocalDataSourceImpl();
+});
+
+final favoritesRepositoryProvider = Provider<FavoritesRepository>((ref) {
+  return FavoritesRepositoryImpl(ref.watch(favoritesLocalDataSourceProvider));
+});
 
 class FavoritesState {
   final List<ExerciseEntity> favorites;
@@ -35,22 +45,17 @@ final favoritesProvider = NotifierProvider<FavoritesNotifier, FavoritesState>(
 );
 
 class FavoritesNotifier extends Notifier<FavoritesState> {
-  late final GetFavoritesUseCase _getFavorites;
-  late final AddFavoriteUseCase _addFavorite;
-  late final RemoveFavoriteUseCase _removeFavorite;
+  FavoritesRepository get _repository => ref.read(favoritesRepositoryProvider);
 
   @override
   FavoritesState build() {
-    _getFavorites = getIt<GetFavoritesUseCase>();
-    _addFavorite = getIt<AddFavoriteUseCase>();
-    _removeFavorite = getIt<RemoveFavoriteUseCase>();
     loadFavorites();
     return const FavoritesState(isLoading: true);
   }
 
   Future<void> loadFavorites() async {
     state = state.copyWith(isLoading: true);
-    final result = await _getFavorites(const NoParams());
+    final result = await _repository.getFavorites();
     result.fold((failure) => state = state.copyWith(isLoading: false), (
       favorites,
     ) {
@@ -65,11 +70,10 @@ class FavoritesNotifier extends Notifier<FavoritesState> {
   Future<void> toggleFavorite(ExerciseEntity exercise) async {
     final isFav = state.favoriteIds.contains(exercise.id);
     if (isFav) {
-      await _removeFavorite(exercise.id);
+      await _repository.removeFavorite(exercise.id);
     } else {
-      await _addFavorite(exercise);
+      await _repository.addFavorite(exercise);
     }
-    // Reload to stay simple, or optimistic update
     await loadFavorites();
   }
 

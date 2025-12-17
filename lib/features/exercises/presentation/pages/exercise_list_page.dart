@@ -1,5 +1,7 @@
+import 'package:artisans_project_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../providers/exercise_provider.dart';
 import '../../../../shared/widgets/exercise_card.dart';
@@ -20,7 +22,7 @@ class ExerciseListPage extends ConsumerWidget {
             children: [
               _buildSearchBar(context, ref, state),
               _buildFilterChips(context, ref, state),
-              Expanded(child: _buildList(state, ref)),
+              Expanded(child: _buildList(context, state, ref)),
             ],
           );
         },
@@ -38,30 +40,33 @@ class ExerciseListPage extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Discover Exercises',
+          Text(
+            AppLocalizations.of(context)!.discoverExercises,
             style: TextStyle(
-              fontSize: 28,
+              fontSize: 28.sp,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           TextField(
-            style: const TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.black, fontSize: 16.sp),
             decoration: InputDecoration(
-              hintText: 'Search exercises...',
-              hintStyle: TextStyle(color: Colors.grey.shade500),
-              prefixIcon: const Icon(Icons.search, color: Colors.black),
+              hintText: AppLocalizations.of(context)!.searchExercises,
+              hintStyle: TextStyle(
+                color: Colors.grey.shade500,
+                fontSize: 14.sp,
+              ),
+              prefixIcon: Icon(Icons.search, color: Colors.black, size: 24.r),
               filled: true,
               fillColor: Colors.grey.shade100,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(16.r),
                 borderSide: BorderSide.none,
               ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 16,
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+                vertical: 16.h,
               ),
             ),
             onSubmitted: (value) {
@@ -94,12 +99,12 @@ class ExerciseListPage extends ConsumerWidget {
       'waist',
     ];
     return SizedBox(
-      height: 40,
+      height: 40.h,
       child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
         scrollDirection: Axis.horizontal,
         itemCount: bodyParts.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        separatorBuilder: (_, __) => SizedBox(width: 8.w),
         itemBuilder: (context, index) {
           final part = bodyParts[index];
           final isSelected = (state.selectedBodyPart ?? 'All') == part;
@@ -110,10 +115,10 @@ class ExerciseListPage extends ConsumerWidget {
                   .updateFilters(bodyPart: part);
             },
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
               decoration: BoxDecoration(
                 color: isSelected ? Colors.black : Colors.white,
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(24.r),
                 border: Border.all(
                   color: isSelected ? Colors.black : Colors.grey.shade300,
                 ),
@@ -124,7 +129,7 @@ class ExerciseListPage extends ConsumerWidget {
                 style: TextStyle(
                   color: isSelected ? Colors.white : Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontSize: 12,
+                  fontSize: 12.sp,
                 ),
               ),
             ),
@@ -134,7 +139,11 @@ class ExerciseListPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildList(ExerciseListState state, WidgetRef ref) {
+  Widget _buildList(
+    BuildContext context,
+    ExerciseListState state,
+    WidgetRef ref,
+  ) {
     if (state.isLoading && state.exercises.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -142,7 +151,9 @@ class ExerciseListPage extends ConsumerWidget {
       return Center(child: Text(state.errorMessage!));
     }
     if (state.exercises.isEmpty) {
-      return const Center(child: Text('No exercises found.'));
+      return Center(
+        child: Text(AppLocalizations.of(context)!.noExercisesFound),
+      );
     }
 
     return NotificationListener<ScrollNotification>(

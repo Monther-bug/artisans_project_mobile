@@ -31,7 +31,6 @@ A Flutter application built with Clean Architecture, demonstrating robust struct
     ```bash
     flutter run
     ```
-    *Note: For Google Sign-In functionality, ensure SHA-1 keys are added to Firebase Console.*
 
 ## Architecture
 

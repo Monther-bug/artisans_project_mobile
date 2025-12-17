@@ -1,4 +1,9 @@
+import 'package:artisans_project_mobile/core/constants/app_dimensions.dart';
 import 'package:artisans_project_mobile/features/auth/presentation/providers/auth_provider.dart';
+import 'package:artisans_project_mobile/features/profile/presentation/widgets/logout_dialog.dart';
+import 'package:artisans_project_mobile/features/profile/presentation/widgets/profile_header.dart';
+import 'package:artisans_project_mobile/features/profile/presentation/widgets/profile_menu_item.dart';
+import 'package:artisans_project_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +17,7 @@ class ProfilePage extends ConsumerWidget {
     final themeMode = ref.watch(themeProvider);
     final authState = ref.watch(authNotifierProvider);
     final user = authState.user;
+    final localization = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -25,10 +31,6 @@ class ProfilePage extends ConsumerWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.favorite, color: Colors.black),
-            onPressed: () => context.go('/favorites'),
-          ),
-          IconButton(
             icon: Icon(
               themeMode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode,
               color: Colors.black,
@@ -37,128 +39,54 @@ class ProfilePage extends ConsumerWidget {
               ref.read(themeProvider.notifier).toggleTheme();
             },
           ),
-          IconButton(
-            icon: const Icon(Icons.logout, color: Colors.red),
-            onPressed: () {
-              ref.read(authNotifierProvider.notifier).signOut();
-              context.go('/login');
-            },
-          ),
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(AppDimensions.paddingMedium),
         child: Column(
           children: [
-            const SizedBox(height: 20),
-            // Profile Header
-            Center(
-              child: Column(
-                children: [
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.person,
-                      size: 50,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    user?.email ?? 'User',
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    user?.id ?? 'ID: Unknown',
-                    style: TextStyle(fontSize: 14, color: Colors.grey.shade500),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 32),
-            // Settings Tiles
-            _buildSettingsTile(
-              context,
+            SizedBox(height: AppDimensions.spaceMedium),
+            ProfileHeader(user: user),
+            SizedBox(height: AppDimensions.spaceXLarge),
+            ProfileMenuItem(
               icon: Icons.person_outline,
-              title: 'Edit Profile',
+              title: localization.editProfile,
               onTap: () {},
             ),
-            _buildSettingsTile(
-              context,
+            ProfileMenuItem(
               icon: Icons.notifications_outlined,
-              title: 'Notifications',
+              title: localization.notifications,
               onTap: () {},
             ),
-            _buildSettingsTile(
-              context,
+            ProfileMenuItem(
               icon: Icons.lock_outline,
-              title: 'Privacy & Security',
+              title: localization.privacySecurity,
               onTap: () {},
             ),
-            _buildSettingsTile(
-              context,
+            ProfileMenuItem(
               icon: Icons.help_outline,
-              title: 'Help & Support',
+              title: localization.helpSupport,
               onTap: () {},
+            ),
+            SizedBox(height: AppDimensions.spaceLarge),
+            ProfileMenuItem(
+              icon: Icons.logout,
+              title: 'Logout',
+              isDestructive: true,
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => LogoutDialog(
+                    onConfirm: () {
+                      ref.read(authNotifierProvider.notifier).signOut();
+                      context.go('/login');
+                    },
+                  ),
+                );
+              },
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildSettingsTile(
-    BuildContext context, {
-    required IconData icon,
-    required String title,
-    required VoidCallback onTap,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: ListTile(
-        leading: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.grey.shade100,
-            shape: BoxShape.circle,
-          ),
-          child: Icon(icon, color: Colors.black),
-        ),
-        title: Text(
-          title,
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
-          ),
-        ),
-        trailing: Icon(
-          Icons.arrow_forward_ios,
-          size: 16,
-          color: Colors.grey.shade400,
-        ),
-        onTap: onTap,
       ),
     );
   }

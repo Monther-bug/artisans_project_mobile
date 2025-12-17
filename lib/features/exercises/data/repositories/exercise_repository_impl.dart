@@ -1,16 +1,19 @@
 import 'package:dartz/dartz.dart';
-import 'package:injectable/injectable.dart';
+
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failures.dart';
 import '../../domain/entities/exercise_entity.dart';
 import '../../domain/repositories/exercise_repository.dart';
 import '../datasources/exercise_remote_data_source.dart';
+import '../datasources/exercise_local_data_source.dart';
 
-@LazySingleton(as: ExerciseRepository)
 class ExerciseRepositoryImpl implements ExerciseRepository {
-  final ExerciseRemoteDataSource _remoteDataSource;
+  final ExerciseLocalDataSource _localDataSource;
 
-  ExerciseRepositoryImpl(this._remoteDataSource);
+  ExerciseRepositoryImpl(
+    ExerciseRemoteDataSource remoteDataSource,
+    this._localDataSource,
+  );
 
   @override
   Future<Either<Failure, List<ExerciseEntity>>> getExercises({
@@ -20,17 +23,23 @@ class ExerciseRepositoryImpl implements ExerciseRepository {
     String? bodyPart,
   }) async {
     try {
-      final remoteExercises = await _remoteDataSource.getExercises(
-        limit: limit,
-        offset: offset,
-        searchQuery: searchQuery,
-        bodyPart: bodyPart,
-      );
-      return Right(remoteExercises);
+      if (true) {
+        final models = await _localDataSource.getExercises(
+          limit: limit,
+          offset: offset,
+          searchQuery: searchQuery,
+          bodyPart: bodyPart,
+        );
+        return Right(models);
+      }
+    } on NotFoundException catch (e) {
+      return Left(NotFoundFailure(e.message));
+    } on UnauthorizedException catch (e) {
+      return Left(UnauthorizedFailure(e.message));
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));
     } catch (e) {
-      return const Left(ServerFailure('Unexpected error'));
+      return Left(ServerFailure(e.toString()));
     }
   }
 }

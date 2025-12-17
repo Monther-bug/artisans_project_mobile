@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:injectable/injectable.dart';
+
 import 'package:artisans_project_mobile/core/errors/exceptions.dart';
 import 'package:artisans_project_mobile/core/errors/failures.dart';
 import 'package:artisans_project_mobile/features/exercises/data/models/exercise_model.dart';
@@ -7,7 +7,6 @@ import 'package:artisans_project_mobile/features/exercises/domain/entities/exerc
 import '../../domain/repositories/favorites_repository.dart';
 import '../datasources/favorites_local_data_source.dart';
 
-@LazySingleton(as: FavoritesRepository)
 class FavoritesRepositoryImpl implements FavoritesRepository {
   final FavoritesLocalDataSource _localDataSource;
 

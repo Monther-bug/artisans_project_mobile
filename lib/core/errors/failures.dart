@@ -24,3 +24,11 @@ class NetworkFailure extends Failure {
 class AuthFailure extends Failure {
   const AuthFailure(super.message);
 }
+
+class NotFoundFailure extends Failure {
+  const NotFoundFailure(super.message);
+}
+
+class UnauthorizedFailure extends Failure {
+  const UnauthorizedFailure(super.message);
+}

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:injectable/injectable.dart';
+
 import '../../../../core/errors/exceptions.dart';
 import '../models/user_model.dart';
 
@@ -13,7 +13,6 @@ abstract class AuthRemoteDataSource {
   Stream<UserModel?> get authStateChanges;
 }
 
-@LazySingleton(as: AuthRemoteDataSource)
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;

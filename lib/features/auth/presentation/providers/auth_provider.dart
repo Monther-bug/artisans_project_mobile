@@ -1,10 +1,30 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/usecase/usecase.dart';
-import '../../../../core/di/injection.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
 import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repository.dart';
-import '../../domain/usecases/auth_usecases.dart';
+import '../../data/datasources/auth_remote_data_source.dart';
+import '../../data/repositories/auth_repository_impl.dart';
+
+// --- DI Providers ---
+
+final firebaseAuthProvider = Provider<FirebaseAuth>(
+  (ref) => FirebaseAuth.instance,
+);
+final googleSignInProvider = Provider<GoogleSignIn>((ref) => GoogleSignIn());
+
+final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
+  return AuthRemoteDataSourceImpl(
+    ref.watch(firebaseAuthProvider),
+    ref.watch(googleSignInProvider),
+  );
+});
+
+final authRepositoryProvider = Provider<AuthRepository>((ref) {
+  return AuthRepositoryImpl(ref.watch(authRemoteDataSourceProvider));
+});
 
 // --- State ---
 class AuthState extends Equatable {
@@ -51,33 +71,23 @@ final authNotifierProvider = NotifierProvider<AuthNotifier, AuthState>(() {
 });
 
 final authStateChangesProvider = StreamProvider<UserEntity?>((ref) {
-  // Access setup needed for Stream, repository not directly exposed here via DI for Stream yet?
-  // We can use GetIt to get Repository or creating a provider for Repository.
-  // Ideally, create a repository provider.
-  return getIt<AuthRepository>().authStateChanges;
-}, dependencies: []);
+  return ref.watch(authRepositoryProvider).authStateChanges;
+}, dependencies: [authRepositoryProvider]);
 
 class AuthNotifier extends Notifier<AuthState> {
-  late final LoginUseCase _loginUseCase;
-  late final RegisterUseCase _registerUseCase;
-  late final GoogleSignInUseCase _googleSignInUseCase;
-  late final SignOutUseCase _signOutUseCase;
-  late final GetCurrentUserUseCase _getCurrentUserUseCase;
+  // We can access repository via ref.read in methods if we want, or keep it in a variable.
+  // However, Notifier has `ref` available.
+
+  AuthRepository get _repository => ref.read(authRepositoryProvider);
 
   @override
   AuthState build() {
-    _loginUseCase = getIt<LoginUseCase>();
-    _registerUseCase = getIt<RegisterUseCase>();
-    _googleSignInUseCase = getIt<GoogleSignInUseCase>();
-    _signOutUseCase = getIt<SignOutUseCase>();
-    _getCurrentUserUseCase = getIt<GetCurrentUserUseCase>();
-
-    _checkCurrentUser();
+    Future.microtask(() => _checkCurrentUser());
     return const AuthState.initial();
   }
 
   Future<void> _checkCurrentUser() async {
-    final result = await _getCurrentUserUseCase(const NoParams());
+    final result = await _repository.getCurrentUser();
     result.fold(
       (failure) => state = state.copyWith(user: null),
       (user) => state = state.copyWith(user: user),
@@ -86,9 +96,7 @@ class AuthNotifier extends Notifier<AuthState> {
 
   Future<void> login(String email, String password) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
-    final result = await _loginUseCase(
-      LoginParams(email: email, password: password),
-    );
+    final result = await _repository.signInWithEmail(email, password);
     state = result.fold(
       (failure) =>
           state.copyWith(isLoading: false, errorMessage: failure.message),
@@ -98,9 +106,7 @@ class AuthNotifier extends Notifier<AuthState> {
 
   Future<void> register(String email, String password) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
-    final result = await _registerUseCase(
-      RegisterParams(email: email, password: password),
-    );
+    final result = await _repository.registerWithEmail(email, password);
     state = result.fold(
       (failure) =>
           state.copyWith(isLoading: false, errorMessage: failure.message),
@@ -110,7 +116,7 @@ class AuthNotifier extends Notifier<AuthState> {
 
   Future<void> signInWithGoogle() async {
     state = state.copyWith(isLoading: true, errorMessage: null);
-    final result = await _googleSignInUseCase(const NoParams());
+    final result = await _repository.signInWithGoogle();
     state = result.fold(
       (failure) =>
           state.copyWith(isLoading: false, errorMessage: failure.message),
@@ -120,7 +126,7 @@ class AuthNotifier extends Notifier<AuthState> {
 
   Future<void> signOut() async {
     state = state.copyWith(isLoading: true);
-    await _signOutUseCase(const NoParams());
+    await _repository.signOut();
     state = const AuthState.initial();
   }
 

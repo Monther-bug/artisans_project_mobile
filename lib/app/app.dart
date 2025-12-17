@@ -1,3 +1,4 @@
+import 'package:artisans_project_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,6 +24,8 @@ class MyApp extends ConsumerWidget {
           darkTheme: AppTheme.darkTheme,
           themeMode: themeMode,
           routerConfig: AppRouter.router,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
         );
       },
     );

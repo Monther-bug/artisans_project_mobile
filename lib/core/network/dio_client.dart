@@ -1,32 +1,28 @@
 import 'package:dio/dio.dart';
-import 'package:injectable/injectable.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../constants/api_constants.dart';
 
-@module
-abstract class NetworkModule {
-  @lazySingleton
-  Dio get dio {
-    final dio = Dio(
-      BaseOptions(
-        baseUrl: ApiConstants.baseUrl,
-        connectTimeout: const Duration(seconds: 30),
-        receiveTimeout: const Duration(seconds: 30),
-        headers: {
-          'Content-Type': 'application/json',
-          ApiConstants.apiKeyHeader: ApiConstants.apiKeyValue,
-        },
-      ),
-    );
+final dioProvider = Provider<Dio>((ref) {
+  final dio = Dio(
+    BaseOptions(
+      baseUrl: ApiConstants.baseUrl,
+      connectTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 30),
+      headers: {
+        'Content-Type': 'application/json',
+        ApiConstants.apiKeyHeader: ApiConstants.apiKeyValue,
+      },
+    ),
+  );
 
-    dio.interceptors.add(
-      LogInterceptor(
-        request: true,
-        requestBody: true,
-        responseBody: true,
-        error: true,
-      ),
-    );
+  dio.interceptors.add(
+    LogInterceptor(
+      request: true,
+      requestBody: true,
+      responseBody: true,
+      error: true,
+    ),
+  );
 
-    return dio;
-  }
-}
+  return dio;
+});

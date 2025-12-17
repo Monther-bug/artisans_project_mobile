@@ -1,8 +1,34 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/di/injection.dart';
+import '../../../../core/network/dio_client.dart';
 import '../../domain/entities/exercise_entity.dart';
-import '../../domain/usecases/get_exercises_usecase.dart';
+import '../../domain/repositories/exercise_repository.dart';
+import '../../data/datasources/exercise_remote_data_source.dart';
+import '../../data/datasources/exercise_local_data_source.dart';
+import '../../data/repositories/exercise_repository_impl.dart';
+
+// Actually ExerciseListPage imports this file, so we shouldn't import it back if not needed.
+
+// --- DI Providers ---
+
+final exerciseRemoteDataSourceProvider = Provider<ExerciseRemoteDataSource>((
+  ref,
+) {
+  return ExerciseRemoteDataSourceImpl(ref.watch(dioProvider));
+});
+
+final exerciseLocalDataSourceProvider = Provider<ExerciseLocalDataSource>((
+  ref,
+) {
+  return ExerciseLocalDataSourceImpl();
+});
+
+final exerciseRepositoryProvider = Provider<ExerciseRepository>((ref) {
+  return ExerciseRepositoryImpl(
+    ref.watch(exerciseRemoteDataSourceProvider),
+    ref.watch(exerciseLocalDataSourceProvider),
+  );
+});
 
 class ExerciseListState extends Equatable {
   final List<ExerciseEntity> exercises;
@@ -56,13 +82,13 @@ final exerciseListProvider =
     });
 
 class ExerciseListNotifier extends Notifier<ExerciseListState> {
-  late final GetExercisesUseCase _getExercisesUseCase;
   int _offset = 0;
   static const _limit = 10;
 
+  ExerciseRepository get _repository => ref.read(exerciseRepositoryProvider);
+
   @override
   ExerciseListState build() {
-    _getExercisesUseCase = getIt<GetExercisesUseCase>();
     Future.microtask(() => fetchExercises());
     return const ExerciseListState(isLoading: true);
   }
@@ -99,15 +125,11 @@ class ExerciseListNotifier extends Notifier<ExerciseListState> {
       state = state.copyWith(isLoading: true, errorMessage: null);
     }
 
-    final result = await _getExercisesUseCase(
-      GetExercisesParams(
-        limit: _limit,
-        offset: _offset,
-        searchQuery: state.searchQuery,
-        bodyPart: state.selectedBodyPart == 'All'
-            ? null
-            : state.selectedBodyPart,
-      ),
+    final result = await _repository.getExercises(
+      limit: _limit,
+      offset: _offset,
+      searchQuery: state.searchQuery,
+      bodyPart: state.selectedBodyPart == 'All' ? null : state.selectedBodyPart,
     );
 
     result.fold(

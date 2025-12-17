@@ -1,9 +1,11 @@
-import 'package:artisans_project_mobile/features/auth/presentation/providers/auth_provider.dart';
+import 'package:artisans_project_mobile/features/splash/presentation/widgets/splash_logo.dart';
+import 'package:artisans_project_mobile/features/splash/presentation/widgets/splash_title.dart';
+import 'package:artisans_project_mobile/features/splash/presentation/providers/splash_controller.dart';
 import 'package:artisans_project_mobile/shared/theme/app_theme.dart';
-import 'package:artisans_project_mobile/core/constants/app_images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:artisans_project_mobile/core/constants/app_dimensions.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
@@ -37,17 +39,6 @@ class _SplashPageState extends ConsumerState<SplashPage>
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutBack));
 
     _controller.forward();
-
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) {
-        final authState = ref.read(authNotifierProvider);
-        if (authState.user != null) {
-          context.go('/');
-        } else {
-          context.go('/login');
-        }
-      }
-    });
   }
 
   @override
@@ -58,6 +49,16 @@ class _SplashPageState extends ConsumerState<SplashPage>
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(splashControllerProvider, (previous, next) {
+      next.whenData((state) {
+        if (state == SplashState.authenticated) {
+          context.go('/');
+        } else if (state == SplashState.unauthenticated) {
+          context.go('/login');
+        }
+      });
+    });
+
     return Scaffold(
       backgroundColor: AppTheme.primaryColor,
       body: Center(
@@ -68,38 +69,9 @@ class _SplashPageState extends ConsumerState<SplashPage>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.white.withOpacity(0.2),
-                        blurRadius: 30,
-                        spreadRadius: 5,
-                      ),
-                    ],
-                  ),
-                  child: ClipOval(
-                    child: Image.asset(
-                      AppImages.logo,
-                      width: 120,
-                      height: 120,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 24),
-                const Text(
-                  'ARTISANS',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 8,
-                  ),
-                ),
+                const SplashLogo(),
+                SizedBox(height: AppDimensions.spaceLarge),
+                const SplashTitle(),
               ],
             ),
           ),

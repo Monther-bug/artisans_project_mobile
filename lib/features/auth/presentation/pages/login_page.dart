@@ -1,6 +1,7 @@
 import 'package:artisans_project_mobile/core/constants/app_dimensions.dart';
 import 'package:artisans_project_mobile/core/utils/validators.dart';
 import 'package:artisans_project_mobile/shared/theme/app_theme.dart';
+import 'package:artisans_project_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -76,7 +77,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     ),
                     SizedBox(height: AppDimensions.spaceXLarge),
                     Text(
-                      'Welcome Back',
+                      AppLocalizations.of(context)!.welcomeBack,
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.headlineMedium
                           ?.copyWith(
@@ -88,20 +89,20 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     SizedBox(height: AppDimensions.spaceXLarge),
                     CustomTextField(
                       controller: _emailController,
-                      hintText: 'Email',
+                      hintText: AppLocalizations.of(context)!.email,
                       keyboardType: TextInputType.emailAddress,
                       validator: AppValidators.validateEmail,
                     ),
                     SizedBox(height: AppDimensions.spaceMedium),
                     CustomTextField(
                       controller: _passwordController,
-                      hintText: 'Password',
+                      hintText: AppLocalizations.of(context)!.password,
                       isPassword: true,
                       validator: AppValidators.validatePassword,
                     ),
                     SizedBox(height: AppDimensions.spaceLarge),
                     PrimaryButton(
-                      text: 'Login',
+                      text: AppLocalizations.of(context)!.login,
                       onPressed: _login,
                       isLoading: authState.isLoading,
                     ),
@@ -123,12 +124,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Don't have an account?"),
+                        Text(AppLocalizations.of(context)!.dontHaveAccount),
                         TextButton(
                           onPressed: () => context.push('/register'),
-                          child: const Text(
-                            'Register',
-                            style: TextStyle(color: AppTheme.primaryColor),
+                          child: Text(
+                            AppLocalizations.of(context)!.register,
+                            style: const TextStyle(
+                              color: AppTheme.primaryColor,
+                            ),
                           ),
                         ),
                       ],

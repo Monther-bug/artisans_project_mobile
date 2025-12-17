@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:artisans_project_mobile/features/exercises/data/models/exercise_model.dart';
-import 'package:injectable/injectable.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class FavoritesLocalDataSource {
@@ -10,7 +10,6 @@ abstract class FavoritesLocalDataSource {
   Future<bool> isFavorite(String exerciseId);
 }
 
-@LazySingleton(as: FavoritesLocalDataSource)
 class FavoritesLocalDataSourceImpl implements FavoritesLocalDataSource {
   static const String _favoritesKey = 'favorites_exercises';
 
