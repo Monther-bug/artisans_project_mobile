@@ -33,29 +33,10 @@ class ProfileHeader extends StatelessWidget {
           Text(
             user?.email ?? 'User',
             style: TextStyle(
-              fontSize: 24.sp,
+              fontSize: 14.sp,
+              overflow: TextOverflow.ellipsis,
               fontWeight: FontWeight.bold,
               color: Colors.black,
-            ),
-          ),
-          SizedBox(height: AppDimensions.spaceSmall),
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: AppDimensions.paddingMedium,
-              vertical: AppDimensions.paddingExtraSmall,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade100,
-              borderRadius: BorderRadius.circular(AppDimensions.radiusCircular),
-            ),
-            child: Text(
-              user?.id.substring(0, 6).toUpperCase() ?? 'UNKNOWN',
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: Colors.grey.shade600,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 1.2,
-              ),
             ),
           ),
         ],

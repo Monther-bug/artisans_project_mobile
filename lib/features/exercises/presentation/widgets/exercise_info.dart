@@ -18,8 +18,9 @@ class ExerciseInfo extends StatelessWidget {
           Text(
             exercise.name.toUpperCase(),
             style: TextStyle(
-              fontSize: 24.sp,
+              fontSize: 20.sp,
               fontWeight: FontWeight.w900,
+              overflow: TextOverflow.ellipsis,
               color: Colors.black,
               height: 1.1,
               letterSpacing: -0.5,

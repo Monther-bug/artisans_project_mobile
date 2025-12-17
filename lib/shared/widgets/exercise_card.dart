@@ -10,16 +10,19 @@ class ExerciseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
       margin: EdgeInsets.symmetric(
-        horizontal: AppDimensions.paddingMedium, // Replaced 16
-        vertical: AppDimensions.paddingSmall, // Replaced 8
+        horizontal: AppDimensions.paddingMedium,
+        vertical: AppDimensions.paddingSmall,
       ),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.cardTheme.color ?? theme.cardColor,
         borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
+        border: isDark ? Border.all(color: Colors.white24) : null,
       ),
-
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -35,6 +38,8 @@ class ExerciseCard extends StatelessWidget {
                     width: AppDimensions.logoSizeSmall,
                     height: AppDimensions.logoSizeSmall,
                     decoration: BoxDecoration(
+                      color: Colors
+                          .white, // Keep image bg white for transparent GIFs
                       borderRadius: BorderRadius.circular(
                         AppDimensions.radiusSmall,
                       ),
@@ -61,7 +66,9 @@ class ExerciseCard extends StatelessWidget {
                     children: [
                       Text(
                         exercise.name.toUpperCase(),
-
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -72,13 +79,18 @@ class ExerciseCard extends StatelessWidget {
                           vertical: AppDimensions.paddingExtraSmall,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.1),
+                          color: isDark
+                              ? Colors.white.withOpacity(0.1)
+                              : Colors.grey.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(
                             AppDimensions.radiusSmall,
                           ),
                         ),
                         child: Text(
                           '${exercise.bodyPart} | ${exercise.target}',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: isDark ? Colors.white70 : Colors.black87,
+                          ),
                         ),
                       ),
                     ],
@@ -87,6 +99,7 @@ class ExerciseCard extends StatelessWidget {
                 Icon(
                   Icons.arrow_forward_ios_rounded,
                   size: AppDimensions.iconSizeSmall,
+                  color: theme.iconTheme.color,
                 ),
               ],
             ),

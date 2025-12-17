@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../providers/exercise_provider.dart';
 import '../../../../shared/widgets/exercise_card.dart';
+import 'exercise_card_shimmer.dart';
 
 class ExerciseListView extends ConsumerWidget {
   const ExerciseListView({super.key});
@@ -14,7 +15,10 @@ class ExerciseListView extends ConsumerWidget {
     final state = ref.watch(exerciseListProvider);
 
     if (state.isLoading && state.exercises.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
+      return ListView.builder(
+        itemCount: 6,
+        itemBuilder: (_, __) => const ExerciseCardShimmer(),
+      );
     }
     if (state.errorMessage != null && state.exercises.isEmpty) {
       return Center(child: Text(state.errorMessage!));
