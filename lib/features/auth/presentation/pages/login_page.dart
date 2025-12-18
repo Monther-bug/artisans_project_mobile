@@ -4,14 +4,13 @@ import 'package:artisans_project_mobile/core/utils/validators.dart';
 import 'package:artisans_project_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../shared/widgets/custom_text_field.dart';
 import '../../../../shared/widgets/google_button.dart';
 import '../../../../shared/widgets/primary_button.dart';
 import '../providers/auth_provider.dart';
-
-import 'package:artisans_project_mobile/core/constants/app_images.dart';
+import '../widgets/auth_header.dart';
+import '../widgets/auth_navigation_link.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -62,28 +61,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Center(
-                      child: Container(
-                        padding: EdgeInsets.all(AppDimensions.paddingSmall / 2),
-                        child: ClipOval(
-                          child: Image.asset(
-                            AppImages.logo,
-                            height: AppDimensions.logoSizeLarge,
-                            width: AppDimensions.logoSizeLarge,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                      child: AuthHeader(
+                        title: AppLocalizations.of(context)!.welcomeBack,
                       ),
-                    ),
-                    SizedBox(height: AppDimensions.spaceXLarge),
-                    Text(
-                      AppLocalizations.of(context)!.welcomeBack,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineMedium
-                          ?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.primary,
-                            fontSize: 28.sp,
-                          ),
                     ),
 
                     SizedBox(height: AppDimensions.spaceXLarge),
@@ -121,21 +101,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       },
                     ),
                     SizedBox(height: AppDimensions.spaceLarge),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(AppLocalizations.of(context)!.dontHaveAccount),
-                        TextButton(
-                          onPressed: () => context.push('/register'),
-                          child: Text(
-                            AppLocalizations.of(context)!.register,
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontSize: 16.sp,
-                            ),
-                          ),
-                        ),
-                      ],
+                    AuthNavigationLink(
+                      text: AppLocalizations.of(context)!.dontHaveAccount,
+                      actionText: AppLocalizations.of(context)!.register,
+                      onTap: () => context.push('/register'),
                     ),
                   ],
                 ),

@@ -9,5 +9,4 @@ abstract class ExerciseRepository {
     String? searchQuery,
     String? bodyPart,
   });
-  // Search and Filter will be added in Phase 4, but good to anticipate
 }

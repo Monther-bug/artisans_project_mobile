@@ -1,15 +1,15 @@
 import 'package:artisans_project_mobile/core/constants/app_dimensions.dart';
-import 'package:artisans_project_mobile/core/constants/app_images.dart';
 import 'package:artisans_project_mobile/core/utils/validators.dart';
 
 import 'package:artisans_project_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../shared/widgets/custom_text_field.dart';
 import '../../../../shared/widgets/primary_button.dart';
 import '../providers/auth_provider.dart';
+import '../widgets/auth_header.dart';
+import '../widgets/auth_navigation_link.dart';
 
 class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});
@@ -73,37 +73,10 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                 children: [
                   SizedBox(height: AppDimensions.spaceMedium),
                   Center(
-                    child: Container(
-                      padding: EdgeInsets.all(AppDimensions.paddingSmall),
-                      child: ClipOval(
-                        child: Image.asset(
-                          AppImages.logo,
-                          height: AppDimensions.logoSizeSmall,
-                          width: AppDimensions.logoSizeSmall,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                    child: AuthHeader(
+                      title: AppLocalizations.of(context)!.createAccount,
+                      subtitle: AppLocalizations.of(context)!.unlockAccess,
                     ),
-                  ),
-                  SizedBox(height: AppDimensions.spaceLarge),
-                  SizedBox(height: AppDimensions.spaceLarge),
-                  Text(
-                    AppLocalizations.of(context)!.createAccount,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 28.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-
-                  SizedBox(height: AppDimensions.spaceSmall),
-                  Text(
-                    AppLocalizations.of(context)!.unlockAccess,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyLarge?.copyWith(color: Colors.grey),
                   ),
                   SizedBox(height: AppDimensions.spaceXLarge),
                   CustomTextField(
@@ -136,21 +109,10 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     isLoading: authState.isLoading,
                   ),
                   SizedBox(height: AppDimensions.spaceLarge),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(AppLocalizations.of(context)!.alreadyHaveAccount),
-                      TextButton(
-                        onPressed: () => context.go('/login'),
-                        child: Text(
-                          AppLocalizations.of(context)!.login,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontSize: 16.sp,
-                          ),
-                        ),
-                      ),
-                    ],
+                  AuthNavigationLink(
+                    text: AppLocalizations.of(context)!.alreadyHaveAccount,
+                    actionText: AppLocalizations.of(context)!.login,
+                    onTap: () => context.go('/login'),
                   ),
                 ],
               ),

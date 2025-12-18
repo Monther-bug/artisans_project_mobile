@@ -102,8 +102,6 @@ lib/
 - **Authentication**: `firebase_auth: ^6.1.3`, `google_sign_in: ^6.2.1`
 - **Local Storage**: `shared_preferences: ^2.5.4`, `hive: ^2.2.3`
 - **UI**: `google_fonts: ^6.3.3`, `flutter_screenutil: ^5.9.3`, `shimmer: ^3.0.0`
-- **Code Generation**: `freezed: ^3.2.3`, `json_serializable: ^6.11.2`
-- **Utilities**: `equatable: ^2.0.7`, `dartz: ^0.10.1`
 
 ---
 

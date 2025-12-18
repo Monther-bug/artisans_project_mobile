@@ -8,8 +8,6 @@ import '../../domain/repositories/auth_repository.dart';
 import '../../data/datasources/auth_remote_data_source.dart';
 import '../../data/repositories/auth_repository_impl.dart';
 
-// --- DI Providers ---
-
 final firebaseAuthProvider = Provider<FirebaseAuth>(
   (ref) => FirebaseAuth.instance,
 );
@@ -26,12 +24,11 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepositoryImpl(ref.watch(authRemoteDataSourceProvider));
 });
 
-// --- State ---
 class AuthState extends Equatable {
   final UserEntity? user;
   final bool isLoading;
   final String? errorMessage;
-  final bool obscurePassword; // UI state for password visibility
+  final bool obscurePassword;
 
   const AuthState({
     this.user,
@@ -55,7 +52,7 @@ class AuthState extends Equatable {
     return AuthState(
       user: user ?? this.user,
       isLoading: isLoading ?? this.isLoading,
-      errorMessage: errorMessage, // Allow clearing error by passing null
+      errorMessage: errorMessage,
       obscurePassword: obscurePassword ?? this.obscurePassword,
     );
   }
@@ -63,8 +60,6 @@ class AuthState extends Equatable {
   @override
   List<Object?> get props => [user, isLoading, errorMessage, obscurePassword];
 }
-
-// --- Providers ---
 
 final authNotifierProvider = NotifierProvider<AuthNotifier, AuthState>(() {
   return AuthNotifier();
@@ -75,9 +70,6 @@ final authStateChangesProvider = StreamProvider<UserEntity?>((ref) {
 }, dependencies: [authRepositoryProvider]);
 
 class AuthNotifier extends Notifier<AuthState> {
-  // We can access repository via ref.read in methods if we want, or keep it in a variable.
-  // However, Notifier has `ref` available.
-
   AuthRepository get _repository => ref.read(authRepositoryProvider);
 
   @override
