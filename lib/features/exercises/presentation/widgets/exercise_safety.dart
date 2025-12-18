@@ -15,9 +15,15 @@ class ExerciseSafety extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: AppDimensions.paddingMedium),
       padding: EdgeInsets.all(AppDimensions.paddingMedium),
       decoration: BoxDecoration(
-        color: Colors.orange.shade50,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Colors.orange.withOpacity(0.1)
+            : Colors.orange.shade50,
         borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
-        border: Border.all(color: Colors.orange.shade100),
+        border: Border.all(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.orange.withOpacity(0.3)
+              : Colors.orange.shade100,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,7 +40,7 @@ class ExerciseSafety extends StatelessWidget {
                 'Safety First',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.orange.shade900,
+                  color: Colors.orange,
                   fontSize: 12.sp,
                 ),
               ),
@@ -44,7 +50,9 @@ class ExerciseSafety extends StatelessWidget {
           Text(
             safetyInfo,
             style: TextStyle(
-              color: Colors.orange.shade900,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.orange.shade200
+                  : Colors.orange.shade900,
               height: 1.5,
               fontSize: 14.sp,
             ),

@@ -1,6 +1,8 @@
 import 'package:artisans_project_mobile/core/constants/app_dimensions.dart';
-import 'package:artisans_project_mobile/shared/theme/app_theme.dart';
+
 import 'package:flutter/material.dart';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GoogleButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -28,15 +30,15 @@ class GoogleButton extends StatelessWidget {
         ),
         icon: Icon(
           Icons.g_mobiledata,
-          color: AppTheme.primaryColor,
+          color: Theme.of(context).colorScheme.primary,
           size: AppDimensions.iconSizeLarge,
         ),
-        label: const Text(
+        label: Text(
           'Sign in with Google',
           style: TextStyle(
-            fontSize: 16,
+            fontSize: 16.sp,
             fontWeight: FontWeight.w600,
-            color: AppTheme.primaryColor,
+            color: Theme.of(context).colorScheme.primary,
           ),
         ),
       ),

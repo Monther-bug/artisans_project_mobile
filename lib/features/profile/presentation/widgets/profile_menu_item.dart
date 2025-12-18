@@ -1,6 +1,8 @@
 import 'package:artisans_project_mobile/core/constants/app_dimensions.dart';
-import 'package:flutter/material.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'package:flutter/material.dart';
 
 class ProfileMenuItem extends StatelessWidget {
   final IconData icon;
@@ -8,7 +10,7 @@ class ProfileMenuItem extends StatelessWidget {
   final VoidCallback onTap;
   final bool isDestructive;
 
-  const ProfileMenuItem({
+  ProfileMenuItem({
     super.key,
     required this.icon,
     required this.title,
@@ -21,7 +23,7 @@ class ProfileMenuItem extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: AppDimensions.paddingSmall),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppDimensions.radiusMedium),
         border: Border.all(color: Colors.grey.shade100),
       ),
@@ -39,12 +41,14 @@ class ProfileMenuItem extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: isDestructive
                         ? Colors.red.shade50
-                        : Colors.grey.shade50,
+                        : Theme.of(context).scaffoldBackgroundColor,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     icon,
-                    color: isDestructive ? Colors.red : Colors.black,
+                    color: isDestructive
+                        ? Colors.red
+                        : Theme.of(context).colorScheme.onSurface,
                     size: 20.sp,
                   ),
                 ),
@@ -54,7 +58,9 @@ class ProfileMenuItem extends StatelessWidget {
                     title,
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
-                      color: isDestructive ? Colors.red : Colors.black,
+                      color: isDestructive
+                          ? Colors.red
+                          : Theme.of(context).colorScheme.onSurface,
                       fontSize: 16.sp,
                     ),
                   ),
@@ -62,7 +68,9 @@ class ProfileMenuItem extends StatelessWidget {
                 Icon(
                   Icons.arrow_forward_ios,
                   size: 16.sp,
-                  color: Colors.grey.shade300,
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withOpacity(0.5),
                 ),
               ],
             ),

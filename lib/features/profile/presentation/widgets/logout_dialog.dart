@@ -78,7 +78,7 @@ class LogoutDialog extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      context.pop(); // Close dialog
+                      context.pop();
                       onConfirm();
                     },
                     style: ElevatedButton.styleFrom(

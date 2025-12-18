@@ -21,7 +21,7 @@ class ExerciseInfo extends StatelessWidget {
               fontSize: 20.sp,
               fontWeight: FontWeight.w900,
               overflow: TextOverflow.ellipsis,
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.onSurface,
               height: 1.1,
               letterSpacing: -0.5,
             ),
@@ -31,14 +31,15 @@ class ExerciseInfo extends StatelessWidget {
             spacing: AppDimensions.spaceSmall,
             runSpacing: AppDimensions.spaceSmall,
             children: [
-              _buildTag('Body Part', exercise.bodyPart),
+              _buildTag(context, 'Body Part', exercise.bodyPart),
               if (exercise.equipment.isNotEmpty)
-                _buildTag('Equipment', exercise.equipment),
+                _buildTag(context, 'Equipment', exercise.equipment),
               if (exercise.target.isNotEmpty)
-                _buildTag('Target', exercise.target),
+                _buildTag(context, 'Target', exercise.target),
               if (exercise.difficulty.isNotEmpty)
-                _buildTag('Difficulty', exercise.difficulty),
-              if (exercise.type.isNotEmpty) _buildTag('Type', exercise.type),
+                _buildTag(context, 'Difficulty', exercise.difficulty),
+              if (exercise.type.isNotEmpty)
+                _buildTag(context, 'Type', exercise.type),
             ],
           ),
         ],
@@ -46,16 +47,16 @@ class ExerciseInfo extends StatelessWidget {
     );
   }
 
-  Widget _buildTag(String label, String value) {
+  Widget _buildTag(BuildContext context, String label, String value) {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: AppDimensions.paddingSmall,
         vertical: 8.h,
       ),
       decoration: BoxDecoration(
-        color: Colors.grey.shade100,
+        color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppDimensions.radiusSmall),
-        border: Border.all(color: Colors.grey.shade200),
+        border: Border.all(color: Theme.of(context).dividerColor),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,7 +66,7 @@ class ExerciseInfo extends StatelessWidget {
             label.toUpperCase(),
             style: TextStyle(
               fontSize: 10.sp,
-              color: Colors.grey.shade500,
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
               fontWeight: FontWeight.bold,
               letterSpacing: 0.5,
             ),
@@ -75,7 +76,7 @@ class ExerciseInfo extends StatelessWidget {
             value,
             style: TextStyle(
               fontSize: 10.sp,
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.onSurface,
               fontWeight: FontWeight.w600,
             ),
           ),

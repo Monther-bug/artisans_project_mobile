@@ -2,6 +2,7 @@ import 'package:artisans_project_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../shared/widgets/custom_app_bar.dart';
 import '../../../../shared/widgets/exercise_card.dart';
 import '../providers/favorites_provider.dart';
 
@@ -13,7 +14,7 @@ class FavoritesPage extends ConsumerWidget {
     final state = ref.watch(favoritesProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.favorites)),
+      appBar: CustomAppBar(title: AppLocalizations.of(context)!.favorites),
       body: state.isLoading
           ? const Center(child: CircularProgressIndicator())
           : state.favorites.isEmpty

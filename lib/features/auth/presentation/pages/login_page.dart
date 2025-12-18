@@ -1,9 +1,10 @@
 import 'package:artisans_project_mobile/core/constants/app_dimensions.dart';
 import 'package:artisans_project_mobile/core/utils/validators.dart';
-import 'package:artisans_project_mobile/shared/theme/app_theme.dart';
+
 import 'package:artisans_project_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../shared/widgets/custom_text_field.dart';
 import '../../../../shared/widgets/google_button.dart';
@@ -29,9 +30,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       await ref
           .read(authNotifierProvider.notifier)
           .login(_emailController.text.trim(), _passwordController.text.trim());
-      // Success check is done via listener or simple error check
       if (ref.read(authNotifierProvider).user != null) {
-        if (mounted) context.go('/'); // Navigate to Home
+        if (mounted) context.go('/');
       }
     }
   }
@@ -40,7 +40,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Widget build(BuildContext context) {
     final authState = ref.watch(authNotifierProvider);
 
-    // Listen to errors
     ref.listen(authNotifierProvider, (previous, next) {
       if (next.errorMessage != null &&
           next.errorMessage != previous?.errorMessage) {
@@ -82,7 +81,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       style: Theme.of(context).textTheme.headlineMedium
                           ?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.primaryColor,
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 28.sp,
                           ),
                     ),
 
@@ -129,8 +129,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           onPressed: () => context.push('/register'),
                           child: Text(
                             AppLocalizations.of(context)!.register,
-                            style: const TextStyle(
-                              color: AppTheme.primaryColor,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 16.sp,
                             ),
                           ),
                         ),

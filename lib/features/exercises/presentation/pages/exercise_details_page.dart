@@ -16,11 +16,11 @@ class ExerciseDetailsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
-        leading: const BackButton(color: Colors.black),
+        leading: BackButton(color: Theme.of(context).colorScheme.onSurface),
         actions: [
           Consumer(
             builder: (context, ref, child) {
@@ -31,7 +31,9 @@ class ExerciseDetailsPage extends ConsumerWidget {
               );
               return IconButton(
                 icon: Icon(isFav ? Icons.favorite : Icons.favorite_border),
-                color: isFav ? Colors.red : Colors.black,
+                color: isFav
+                    ? Colors.red
+                    : Theme.of(context).colorScheme.onSurface,
                 onPressed: () {
                   ref.read(favoritesProvider.notifier).toggleFavorite(exercise);
                 },

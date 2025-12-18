@@ -38,25 +38,31 @@ class ExerciseListView extends ConsumerWidget {
         }
         return false;
       },
-      child: ListView.builder(
-        itemCount: state.exercises.length + (state.isLoading ? 1 : 0),
-        itemBuilder: (context, index) {
-          if (index >= state.exercises.length) {
-            return const Center(
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
-          final exercise = state.exercises[index];
-          return ExerciseCard(
-            exercise: exercise,
-            onTap: () {
-              context.go('/exercise/${exercise.id}', extra: exercise);
-            },
-          );
+      child: RefreshIndicator(
+        onRefresh: () async {
+          await ref.read(exerciseListProvider.notifier).refresh();
         },
+        child: ListView.builder(
+          physics: const AlwaysScrollableScrollPhysics(),
+          itemCount: state.exercises.length + (state.isLoading ? 1 : 0),
+          itemBuilder: (context, index) {
+            if (index >= state.exercises.length) {
+              return const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+            final exercise = state.exercises[index];
+            return ExerciseCard(
+              exercise: exercise,
+              onTap: () {
+                context.go('/exercise/${exercise.id}', extra: exercise);
+              },
+            );
+          },
+        ),
       ),
     );
   }

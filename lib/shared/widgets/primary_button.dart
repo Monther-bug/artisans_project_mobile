@@ -1,6 +1,8 @@
 import 'package:artisans_project_mobile/core/constants/app_dimensions.dart';
-import 'package:artisans_project_mobile/shared/theme/app_theme.dart';
+
 import 'package:flutter/material.dart';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String text;
@@ -26,7 +28,7 @@ class PrimaryButton extends StatelessWidget {
       height: AppDimensions.buttonHeight,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: AppTheme.primaryColor,
+        color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(AppDimensions.radiusLarge),
       ),
       child: Material(
@@ -48,7 +50,7 @@ class PrimaryButton extends StatelessWidget {
                     text,
                     style: TextStyle(
                       color: textColor,
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 0.5,
                     ),

@@ -38,8 +38,7 @@ class ExerciseCard extends StatelessWidget {
                     width: AppDimensions.logoSizeSmall,
                     height: AppDimensions.logoSizeSmall,
                     decoration: BoxDecoration(
-                      color: Colors
-                          .white, // Keep image bg white for transparent GIFs
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(
                         AppDimensions.radiusSmall,
                       ),

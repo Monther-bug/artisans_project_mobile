@@ -2,40 +2,43 @@
 
 A Flutter fitness application built with Clean Architecture, featuring exercise discovery, favorites management, and robust authentication.
 
-## ✨ Features
+## Features
 
-### 🔐 Authentication
+### Authentication
 - Firebase Email/Password authentication
 - Google Sign-In integration
-- Secure user session management
-- OTP verification flow
 
-### 💪 Exercise Discovery
+- **Dark Mode Support**:
+
+### Exercise Discovery
 - Browse extensive exercise library from ExerciseDB API
 - View detailed exercise information with animated GIFs
 - Step-by-step instructions and safety tips
+- **Pull-to-Refresh**: Easily refresh the exercise list to get the latest data.
+- **Responsive Design**: UI scales perfectly across different screen sizes.
+
+- **Offline Support**: Exercises are cached locally using Hive for offline access.
 - Pagination support for efficient loading
 
-### 🔍 Search & Filter
+###  Search & Filter
 - Real-time exercise search by name
 - Filter by body part (Back, Cardio, Chest, Arms, Legs, etc.)
 - Dedicated search page with independent state management
 - Shimmer loading effects
 
-### ⭐ Favorites
+###  Favorites
 - Save favorite exercises locally using SharedPreferences
 - Quick access to saved exercises
 - Persistent across app sessions
 
-### 🎨 User Experience
+###  User Experience
 - Light/Dark mode with theme persistence
 - Responsive bottom navigation with Riverpod state management
-- Smooth animations and transitions
 - Localization support (English & Arabic)
 
 ---
 
-## 🚀 Setup
+##  Setup
 
 ### Prerequisites
 - Flutter SDK ^3.9.2
@@ -97,7 +100,7 @@ lib/
 - **Navigation**: `go_router: ^17.0.1`
 - **Networking**: `dio: ^5.9.0`
 - **Authentication**: `firebase_auth: ^6.1.3`, `google_sign_in: ^6.2.1`
-- **Local Storage**: `shared_preferences: ^2.5.4`
+- **Local Storage**: `shared_preferences: ^2.5.4`, `hive: ^2.2.3`
 - **UI**: `google_fonts: ^6.3.3`, `flutter_screenutil: ^5.9.3`, `shimmer: ^3.0.0`
 - **Code Generation**: `freezed: ^3.2.3`, `json_serializable: ^6.11.2`
 - **Utilities**: `equatable: ^2.0.7`, `dartz: ^0.10.1`
@@ -141,40 +144,23 @@ flutter build appbundle
 flutter build ios --release
 ```
 
----
 
-## 📝 Recent Updates (v1.0.0)
 
-### Bug Fixes
-- ✅ Fixed "Undefined name 'ref'" error in bottom navigation
-- ✅ Fixed search results affecting main exercise list (separate providers)
-- ✅ Improved localization configuration
 
-### Improvements
-- ✅ Converted main layout to use Riverpod ConsumerWidget
-- ✅ Independent state management for search and exercise list
-- ✅ Enhanced UI with shimmer loading effects
-- ✅ Added pagination for efficient data loading
 
 ---
 
-## 🌍 Localization
+##  Localization
 
 The app supports multiple languages:
 - **English** (en)
 - **Arabic** (ar) with RTL layout support
 
-To add more languages, update `lib/l10n/` files.
 
----
 
-## 📄 License
+--
 
-This project is for demonstration purposes.
-
----
-
-## 🙏 Credits
+##  Credits
 
 - **ExerciseDB API** for exercise data and images
 - **Firebase** for authentication services
@@ -183,4 +169,3 @@ This project is for demonstration purposes.
 ---
 
 **Version**: 1.0.0+1  
-**Last Updated**: December 2025

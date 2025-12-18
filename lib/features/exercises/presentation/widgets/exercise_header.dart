@@ -22,11 +22,11 @@ class ExerciseHeader extends StatelessWidget {
             return Container(
               height: 300.h,
               width: double.infinity,
-              color: Colors.grey.shade100,
+              color: Theme.of(context).cardTheme.color,
               child: Icon(
                 Icons.fitness_center,
                 size: 60.sp,
-                color: Colors.grey,
+                color: Theme.of(context).disabledColor,
               ),
             );
           },

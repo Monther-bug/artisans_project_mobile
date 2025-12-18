@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:artisans_project_mobile/shared/theme/theme_provider.dart';
-import 'package:artisans_project_mobile/shared/providers/locale_provider.dart';
+import 'package:artisans_project_mobile/shared/widgets/custom_app_bar.dart';
+import '../widgets/language_selector_sheet.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
@@ -21,20 +22,14 @@ class ProfilePage extends ConsumerWidget {
     final localization = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text(
-          'Profile',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: CustomAppBar(
+        title: 'Profile',
         actions: [
           IconButton(
             icon: Icon(
               themeMode == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode,
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
             onPressed: () {
               ref.read(themeProvider.notifier).toggleTheme();
@@ -72,9 +67,7 @@ class ProfilePage extends ConsumerWidget {
             ProfileMenuItem(
               icon: Icons.language,
               title: 'Language (English / العربية)',
-              onTap: () {
-                ref.read(localeProvider.notifier).toggleLocale();
-              },
+              onTap: () => LanguageSelectorSheet.show(context),
             ),
             SizedBox(height: AppDimensions.spaceLarge),
             ProfileMenuItem(

@@ -20,7 +20,10 @@ final exerciseLocalDataSourceProvider = Provider<ExerciseLocalDataSource>((
 });
 
 final exerciseRepositoryProvider = Provider<ExerciseRepository>((ref) {
-  return ExerciseRepositoryImpl(ref.watch(exerciseRemoteDataSourceProvider));
+  return ExerciseRepositoryImpl(
+    ref.watch(exerciseRemoteDataSourceProvider),
+    ref.watch(exerciseLocalDataSourceProvider),
+  );
 });
 
 class ExerciseListState extends Equatable {
@@ -104,6 +107,17 @@ class ExerciseListNotifier extends Notifier<ExerciseListState> {
     await fetchExercises();
   }
 
+  Future<void> refresh() async {
+    _offset = 0;
+    state = state.copyWith(
+      isLoading: true,
+      exercises: [],
+      hasReachedMax: false,
+      errorMessage: null,
+    );
+    await fetchExercises();
+  }
+
   Future<void> fetchExercises() async {
     if (state.hasReachedMax && !state.isLoading) return;
 
@@ -151,7 +165,6 @@ class SearchExerciseListNotifier extends Notifier<ExerciseListState> {
 
   @override
   ExerciseListState build() {
-    // Don't auto-fetch on build for search page
     return const ExerciseListState();
   }
 

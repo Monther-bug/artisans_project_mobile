@@ -19,7 +19,7 @@ class ExerciseInstructions extends StatelessWidget {
             style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           SizedBox(height: AppDimensions.spaceMedium),
@@ -38,13 +38,13 @@ class ExerciseInstructions extends StatelessWidget {
                     height: 20.w,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: Colors.black,
+                      color: Theme.of(context).colorScheme.onSurface,
                       borderRadius: BorderRadius.circular(8.r),
                     ),
                     child: Text(
                       '${index + 1}',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.surface,
                         fontWeight: FontWeight.bold,
                         fontSize: 14.sp,
                       ),
@@ -56,7 +56,9 @@ class ExerciseInstructions extends StatelessWidget {
                       instructions[index],
                       style: TextStyle(
                         fontSize: 14.sp,
-                        color: Colors.grey.shade800,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withOpacity(0.8),
                         height: 1.6,
                       ),
                     ),

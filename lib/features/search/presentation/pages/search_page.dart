@@ -2,6 +2,7 @@ import 'package:artisans_project_mobile/core/constants/app_dimensions.dart';
 import 'package:artisans_project_mobile/features/search/presentation/widgets/search_empty_view.dart';
 import 'package:artisans_project_mobile/features/search/presentation/widgets/search_input.dart';
 import 'package:artisans_project_mobile/features/exercises/presentation/providers/exercise_provider.dart';
+import 'package:artisans_project_mobile/shared/widgets/custom_app_bar.dart';
 import 'package:artisans_project_mobile/shared/widgets/exercise_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,7 +29,7 @@ class _SearchPageState extends ConsumerState<SearchPage> {
     final state = ref.watch(searchExerciseListProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Search')),
+      appBar: const CustomAppBar(title: 'Search'),
       body: Padding(
         padding: EdgeInsets.all(AppDimensions.paddingMedium),
         child: Column(

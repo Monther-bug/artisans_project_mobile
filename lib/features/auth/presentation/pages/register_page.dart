@@ -1,7 +1,7 @@
 import 'package:artisans_project_mobile/core/constants/app_dimensions.dart';
 import 'package:artisans_project_mobile/core/constants/app_images.dart';
 import 'package:artisans_project_mobile/core/utils/validators.dart';
-import 'package:artisans_project_mobile/shared/theme/app_theme.dart';
+
 import 'package:artisans_project_mobile/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -91,7 +91,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     AppLocalizations.of(context)!.createAccount,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: AppTheme.primaryColor,
+                      color: Theme.of(context).colorScheme.primary,
                       fontSize: 28.sp,
                       fontWeight: FontWeight.bold,
                     ),
@@ -144,7 +144,10 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                         onPressed: () => context.go('/login'),
                         child: Text(
                           AppLocalizations.of(context)!.login,
-                          style: const TextStyle(color: AppTheme.primaryColor),
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 16.sp,
+                          ),
                         ),
                       ),
                     ],
